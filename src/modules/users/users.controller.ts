@@ -3,12 +3,11 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
-  Post,
-  UseGuards
+  Post
 } from '@nestjs/common';
-import { AuthGuard } from 'src/common/guards/auth/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
@@ -18,14 +17,14 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
   @Get()
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(Number(id));
+  findOne() {
+    throw new NotFoundException('User not found');
   }
 
   @Post()
